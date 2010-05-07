@@ -1,0 +1,23 @@
+[API]
+Condition invalid-index-error
+Condition bounding-indices-bad-error
+
+Type charseq
+Type index
+
+Function make
+Function ref
+Function length
+Function each
+Function sub
+Function =
+Function /=
+Function <
+Function >
+Function <=
+Function >=
+Function to-string
+Function as-string
+
+
+[NOTE]
