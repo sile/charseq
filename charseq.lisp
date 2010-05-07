@@ -1,7 +1,8 @@
 (defpackage charseq
   (:use :common-lisp)
-  (:shadow length subseq)
+  (:shadow length subseq = < > <= >= /=)
   (:export bounding-indices-bad-error
+       invalid-index-error
        index
        charseq
       
@@ -10,11 +11,13 @@
        length
        each
        sub
+       
+       = < > <= >= /=
        to-string
        as-string))
 (in-package :charseq)
 
-(declaim (inline to-simple make-charseq make ref length to-string sub))
+(declaim (inline to-simple make-charseq make ref length to-string sub = < > <= >= /=))
      
 (deftype index () '(integer 0 #.array-total-size-limit))
 
@@ -26,6 +29,14 @@
          (with-slots (length start end) condition
            (format stream "The bounding indices ~A and ~A are bad for a string of length ~A."
                start end length)))))
+
+(define-condition invalid-index-error (error)
+  ((index  :initarg :index)
+   (length :initarg :length))
+  (:report (lambda (condition stream)
+             (with-slots (length index) condition
+               (format stream "Index ~A out of bounds of (~A ~A), should be nonnegative and <~A."
+                       index 'charseq length length)))))
  
 (defstruct (charseq (:conc-name ""))
   (str "" :type (simple-array character) :read-only t)
@@ -44,7 +55,7 @@
 (defun make (string &key (start 0) (end (common-lisp:length string)))
   (declare (string string)
        (index start end))
-  (unless (<= start end (common-lisp:length string))
+  (unless (common-lisp:<= start end (common-lisp:length string))
     (error 'bounding-indices-bad-error
        :length (common-lisp:length string) :start start :end end))
  
@@ -55,11 +66,31 @@
 (defun length (#1=charseq)
   (declare (#1# #1#))
   (- (end #1#) (beg #1#)))
+
+(defmacro with-check ((test-form datum &rest arguments) &body body &environment env)
+  ;; TODO: ccl
+  (if #+SBCL (eql 0 (cdr (assoc 'common-lisp:safety (sb-c::lexenv-policy env))))
+      #-SBCL nil
+      `(locally ,@body)
+    `(progn 
+       (unless ,test-form
+         (error ,datum ,@arguments))
+       (locally
+	,@body))))
     
 (defun ref (#1=charseq index)
-  (declare (#1# #1#)
-       (index index))
+  (declare (#1# #1#) (index index))
   (char (str #1#) (+ (beg #1#) index)))
+
+(define-compiler-macro ref (charseq index)
+  (let ((cs (gensym))
+	(i  (gensym)))
+    `(let ((,cs ,charseq)
+           (,i  ,index))
+       (declare (charseq:charseq ,cs) (charseq:index ,i))
+       (with-check ((common-lisp:< ,i (charseq:length ,cs))
+                    'invalid-index-error :length (charseq:length ,cs) :index ,i)
+         (char (str ,cs) (+ (beg ,cs) ,i))))))
 
 (defmacro each ((char charseq &optional result) &body body)
   (let ((tmp (gensym))
@@ -78,7 +109,7 @@
        ((or null index) end))
   (let ((new-beg (+ (beg #1#) start))
     (new-end (+ (beg #1#) (or end (length #1#)))))
-    (unless (<= new-beg new-end (end #1#))
+    (unless (common-lisp:<= new-beg new-end (end #1#))
       (error 'bounding-indices-bad-error :length (length #1#) :start start :end end))
     (make (str #1#) :start new-beg :end new-end)))
 
@@ -94,3 +125,23 @@
         (,end    (end ,tmp)))
        (declare (ignorable ,string ,start ,end))
        ,@body)))
+
+(eval-when (:compile-toplevel :load-toplevel)
+  (defun mksym (&rest args)
+    (intern (with-output-to-string (out)
+              (dolist (a args) (princ a out))))))
+
+(defmacro def-string-cmp (name)
+  `(defun ,name (#1=charseq1 #2=charseq2)
+     (declare (charseq #1# #2#))
+     (,(mksym 'string name)
+      (str #1#) (str #2#) 
+      :start1 (beg #1#) :end1 (end #1#)
+      :start2 (beg #2#) :end2 (end #2#))))
+
+(def-string-cmp =)
+(def-string-cmp /=)
+(def-string-cmp <)
+(def-string-cmp >)
+(def-string-cmp <=)
+(def-string-cmp >=)
