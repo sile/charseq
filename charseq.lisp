@@ -59,10 +59,6 @@
     `(unless ,test-form
        (error ,datum ,@arguments))))
 
-(defmacro invariant (exp)
-  `(unless ,exp
-     (error "Invariant ~A is broken." ',exp)))
-
 (defmacro def-charseq-cmp (name)
   `(defun ,name (#1=charseq1 #2=charseq2)
      (declare (charseq #1# #2#))
@@ -107,7 +103,7 @@
 	    (,str (str ,tmp))
 	    (,beg (beg ,tmp))
 	    (,end (end ,tmp)))
-       #+SBCL (invariant (common-lisp:<= ,beg ,end))
+       #+SBCL (assert (the T (common-lisp:<= ,beg ,end (common-lisp:length ,str))))
        (loop FOR ,i FROM ,beg BELOW ,end
 	     FOR ,char = (char ,str ,i)
          DO ,@body
