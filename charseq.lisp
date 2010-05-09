@@ -105,8 +105,8 @@
   (multiple-value-bind (tmp str beg end i) (values #1=(gensym)#1##1##1##1#)
     `(let* ((,tmp ,charseq)
 	    (,str (str ,tmp))
-	    (,beg (str ,beg))
-	    (,end (str ,end)))
+	    (,beg (str ,tmp))
+	    (,end (str ,tmp)))
        #+SBCL (invariant (<= ,beg ,end))
        (loop FOR ,i FROM ,beg BELOW ,end
 	     FOR ,char = (char ,str ,i)
