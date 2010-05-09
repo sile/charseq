@@ -59,6 +59,10 @@
     `(unless ,test-form
        (error ,datum ,@arguments))))
 
+(defmacro invariant (exp)
+  `(unless ,exp
+     (error "Invariant ~A is broken." ',exp)))
+
 (defmacro def-charseq-cmp (name)
   `(defun ,name (#1=charseq1 #2=charseq2)
      (declare (charseq #1# #2#))
@@ -98,10 +102,13 @@
   (char (str #1#) (+ (beg #1#) index)))
 
 (defmacro each ((char charseq &optional result) &body body)
-  (multiple-value-bind (tmp str i) (values #1=(gensym) #1# #1#)
+  (multiple-value-bind (tmp str beg end i) (values #1=(gensym)#1##1##1##1#)
     `(let* ((,tmp ,charseq)
-	    (,str (str ,tmp)))
-       (loop FOR ,i FROM (beg ,tmp) BELOW (end ,tmp)
+	    (,str (str ,tmp))
+	    (,beg (str ,beg))
+	    (,end (str ,end)))
+       #+SBCL (invariant (<= ,beg ,end))
+       (loop FOR ,i FROM ,beg BELOW ,end
 	     FOR ,char = (char ,str ,i)
          DO ,@body
 	 FINALLY (return ,result)))))
