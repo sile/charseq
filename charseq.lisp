@@ -107,7 +107,7 @@
 	    (,str (str ,tmp))
 	    (,beg (beg ,tmp))
 	    (,end (end ,tmp)))
-       #+SBCL (invariant (<= ,beg ,end))
+       #+SBCL (invariant (common-lisp:<= ,beg ,end))
        (loop FOR ,i FROM ,beg BELOW ,end
 	     FOR ,char = (char ,str ,i)
          DO ,@body
