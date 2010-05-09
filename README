@@ -8,7 +8,6 @@ Type index
 Function make
 Function ref
 Function length
-Function each
 Function sub
 Function =
 Function /=
@@ -17,7 +16,10 @@ Function >
 Function <=
 Function >=
 Function to-string
-Function as-string
+
+Macro with-dynamic-extent
+Macro each
+Macro as-string
 
 
 [NOTE]
