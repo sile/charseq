@@ -69,7 +69,8 @@
 
 (defun to-simple (source start end)
   (declare (string source)
-	   (index start end))
+	   (index start end)
+	   #+SBCL (sb-ext:muffle-conditions sb-ext:compiler-note))
   (let ((dest (make-array (- end start) :element-type 'character)))
     (loop FOR i OF-TYPE index FROM 0
 	  FOR j OF-TYPE index FROM start BELOW end DO
