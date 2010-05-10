@@ -11,26 +11,26 @@
 
 
 [Dictionary]
--- Condition invalid-index-error
--- Condition bounding-indices-bad-error
+- Condition# invalid-index-error
+- Condition# bounding-indices-bad-error
 
--- Type charseq
--- Type index
+- Type# charseq
+- Type# index
 
--- Function make
--- Function ref
--- Function length
--- Function sub
--- Function =
--- Function /=
--- Function <
--- Function >
--- Function <=
--- Function >=
--- Function to-string
+- Function# make STRING &key START END
+- Function# ref CHARSEQ INDEX
+- Function# length CHARSEQ
+- Function# sub CHARSEQ START &optional END
+- Function# = CHARSEQ-1 CHARSEQ-2
+- Function# < CHARSEQ-1 CHARSEQ-2
+- Function# > CHARSEQ-1 CHARSEQ-2
+- Function# <= CHARSEQ-1 CHARSEQ-2
+- Function# >= CHARSEQ-1 CHARSEQ-2
+- Function# /= CHARSEQ-1 CHARSEQ-2
+- Function# to-string CHARSEQ
 
--- Macro with-dynamic-extent
--- Macro each
--- Macro as-string
+- Macro# with-dynamic-extent (CHARSEQ STRING &key START END) &body BODY
+- Macro# each (CHAR CHARSEQ &optional RESULT-FORM) &body BODY
+- Macro# as-string (STRING START END) CHARSEQ &body BODY
 
 
