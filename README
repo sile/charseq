@@ -1,25 +1,30 @@
-[API]
-Condition invalid-index-error
-Condition bounding-indices-bad-error
+[Feature]
+- A character sequence.
+- Can make a shared sub-sequence.
+- Internal source string type is assured to be (simple-array character *).
+- Implementation independent, but optimized for SBCL (later 1.0.37).
 
-Type charseq
-Type index
+[Dictionary]
+-- Condition invalid-index-error
+-- Condition bounding-indices-bad-error
 
-Function make
-Function ref
-Function length
-Function sub
-Function =
-Function /=
-Function <
-Function >
-Function <=
-Function >=
-Function to-string
+-- Type charseq
+-- Type index
 
-Macro with-dynamic-extent
-Macro each
-Macro as-string
+-- Function make
+-- Function ref
+-- Function length
+-- Function sub
+-- Function =
+-- Function /=
+-- Function <
+-- Function >
+-- Function <=
+-- Function >=
+-- Function to-string
+
+-- Macro with-dynamic-extent
+-- Macro each
+-- Macro as-string
 
 
-[NOTE]
