@@ -4,6 +4,12 @@
 - Internal source string type is assured to be (simple-array character *).
 - Implementation independent, but optimized for SBCL (later 1.0.37).
 
+
+[Project URL]
+- github: http://github.com/sile/charseq
+- CLiki: http://www.cliki.net/charseq
+
+
 [Dictionary]
 -- Condition invalid-index-error
 -- Condition bounding-indices-bad-error
