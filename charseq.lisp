@@ -118,18 +118,6 @@
 			'invalid-index-error :length (charseq:length #1#) :index index)
   (char (str #1#) (+ (beg #1#) index)))
 
-(defmacro each ((char charseq &optional result) &body body)
-  (multiple-value-bind (tmp str beg end i) (values #1=(gensym)#1##1##1##1#)
-    `(let* ((,tmp ,charseq)
-	    (,str (str ,tmp))
-	    (,beg (beg ,tmp))
-	    (,end (end ,tmp)))
-       #+SBCL (assert (the T (common-lisp:<= ,beg ,end (common-lisp:length ,str))))
-       (loop FOR ,i FROM ,beg BELOW ,end
-	     FOR ,char = (char ,str ,i)
-         DO ,@body
-	 FINALLY (return ,result)))))
-
 (defun sub (#1=charseq start &optional (end (length #1#)))
   (declare (#1# #1#)
 	   (index start end))
@@ -150,6 +138,15 @@
 	  (,end    (end #1#)))
      (declare (ignorable ,string ,start ,end))
      ,@body))
+
+(defmacro each ((char charseq &optional result) &body body)
+  (multiple-value-bind (str beg end i) (values #1=(gensym)#1##1##1#)
+    `(as-string (,str ,beg ,end) ,charseq
+       #+SBCL (assert (the T (common-lisp:<= ,beg ,end (common-lisp:length ,str))))
+       (loop FOR ,i FROM ,beg BELOW ,end
+	     FOR ,char = (char ,str ,i)
+         DO ,@body
+	 FINALLY (return ,result)))))
 
 (def-charseq-cmp =)
 (def-charseq-cmp /=)
