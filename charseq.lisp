@@ -139,9 +139,14 @@
 			  'bounding-indices-bad-error :length (length #1#) :start start :end end)
     (make (str #1#) :start new-beg :end new-end)))
 
-(defun to-string (#1=charseq)
-  (declare (#1# #1#))
-  (common-lisp:subseq (str #1#) (beg #1#) (end #1#)))
+(defun to-string (#1=charseq &optional (start 0) (end (charseq:length charseq)))
+  (declare (#1# #1#)
+	   (index start end))
+  (let ((new-beg (+ (beg #1#) start))
+	(new-end (+ (beg #1#) end)))
+    (assert-when-safety>0 (common-lisp:<= new-beg new-end (end #1#))
+			  'bounding-indices-bad-error :length (length #1#) :start start :end end)
+    (common-lisp:subseq (str #1#) new-beg new-end)))
 
 (defmacro as-string ((string start end) charseq &body body)
   `(let* ((#1=#:cs ,charseq)
