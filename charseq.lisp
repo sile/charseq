@@ -147,8 +147,6 @@
 (defmacro each ((char charseq &optional result with-optimize-hack-assertion) &body body)
   (multiple-value-bind (str beg end i) (values #1=(gensym)#1##1##1#)
     `(as-string (,str ,beg ,end) ,charseq
-       (declare (optimize (speed 3) (safety 0))
-		(sb-ext:unmuffle-conditions sb-ext:compiler-note))
        ,@(when with-optimize-hack-assertion
 	   `(#+SBCL(assert (the T (common-lisp:<= ,beg ,end)))))
        (do ((,i ,beg (1+ ,i)))
