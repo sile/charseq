@@ -1,4 +1,4 @@
-[Feature]
+[Features]
 - A character sequence.
 - Can make a shared sub-sequence.
 - Internal source string type is assured to be (simple-array character *).
@@ -7,7 +7,7 @@
 
 [Project URL]
 - github: http://github.com/sile/charseq
-   - this version's wiki: http://wiki.github.com/sile/charseq/home/26
+   - this version's wiki: http://wiki.github.com/sile/charseq/home/27
 - CLiki: http://www.cliki.net/charseq
 
 
@@ -33,5 +33,3 @@
 - Macro# with-dynamic-extent (CHARSEQ STRING &key START END) &body BODY
 - Macro# each (CHAR CHARSEQ &optional RESULT-FORM WITH-OPTIMIZE-HACK-ASSERTION) &body BODY
 - Macro# as-string (STRING START END) CHARSEQ &body BODY
-
-

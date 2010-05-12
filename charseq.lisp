@@ -77,8 +77,8 @@
       (setf (char dest i) (char source j)))
     dest))
 
-;;;;;;;;;;;;;;;;;;;;;
-;;; exported function
+;;;;;;;;;;;;;;;;;;;
+;;; export function
 (defun make (string &key (start 0) (end (common-lisp:length string)))
   (declare (string string)
 	   (index start end))
