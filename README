@@ -31,7 +31,7 @@
 - Function# to-string CHARSEQ &optional START END
 
 - Macro# with-dynamic-extent (CHARSEQ STRING &key START END) &body BODY
-- Macro# each (CHAR CHARSEQ &optional RESULT-FORM) &body BODY
+- Macro# each (CHAR CHARSEQ &optional RESULT-FORM WITH-OPTIMIZE-HACK-ASSERTION) &body BODY
 - Macro# as-string (STRING START END) CHARSEQ &body BODY
 
 
