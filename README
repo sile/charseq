@@ -7,6 +7,7 @@
 
 [Project URL]
 - github: http://github.com/sile/charseq
+   - this version's wiki: http://wiki.github.com/sile/charseq/home/25
 - CLiki: http://www.cliki.net/charseq
 
 
@@ -27,7 +28,7 @@
 - Function# <= CHARSEQ-1 CHARSEQ-2
 - Function# >= CHARSEQ-1 CHARSEQ-2
 - Function# /= CHARSEQ-1 CHARSEQ-2
-- Function# to-string CHARSEQ
+- Function# to-string CHARSEQ &optional START END
 
 - Macro# with-dynamic-extent (CHARSEQ STRING &key START END) &body BODY
 - Macro# each (CHAR CHARSEQ &optional RESULT-FORM) &body BODY
