@@ -144,14 +144,17 @@
      (declare (ignorable ,string ,start ,end))
      ,@body))
 
-(defmacro each ((char charseq &optional result) &body body)
+(defmacro each ((char charseq &optional result with-optimize-hack-assertion) &body body)
   (multiple-value-bind (str beg end i) (values #1=(gensym)#1##1##1#)
     `(as-string (,str ,beg ,end) ,charseq
-       #+SBCL (assert (the T (common-lisp:<= ,beg ,end (common-lisp:length ,str))))
-       (loop FOR ,i FROM ,beg BELOW ,end
-	     FOR ,char = (char ,str ,i)
-         DO ,@body
-	 FINALLY (return ,result)))))
+       (declare (optimize (speed 3) (safety 0))
+		(sb-ext:unmuffle-conditions sb-ext:compiler-note))
+       ,@(when with-optimize-hack-assertion
+	   `(#+SBCL(assert (the T (common-lisp:<= ,beg ,end)))))
+       (do ((,i ,beg (1+ ,i)))
+	   ((common-lisp:= ,i ,end) ,result)
+         (let ((,char (char ,str ,i)))
+	   ,@body)))))
 
 (def-charseq-cmp =)
 (def-charseq-cmp /=)
