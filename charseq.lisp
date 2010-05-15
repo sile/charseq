@@ -45,6 +45,10 @@
 ;;;;;;;;;;;;;;;;;;;;;
 ;;; internal function
 (eval-when (:compile-toplevel :load-toplevel :execute)
+#|
+  #+SBCL    sb-cltl2:declaration-information
+  #+CLOZURE ccl:declaration-information
+|#
   (defun safety-optimize-quantity (env)
     #+SBCL (cdr (assoc 'common-lisp:safety (sb-c::lexenv-policy env)))
     #+CLOZURE (ccl::safety-optimize-quantity env)
