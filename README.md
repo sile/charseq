@@ -1,6 +1,6 @@
 charseq
 ====================
-This package provides **charseq** structure which represents an efficient character sequence.  
+This package provides **charseq** structure which represents an efficient character sequence.
 **charseq** is a wrapper of common-lisp standard string and it has following features:
 
 * Creating substring is very efficient.
@@ -11,7 +11,7 @@ This package provides **charseq** structure which represents an efficient charac
 
 Version
 ---------------
-0.1.8
+0.1.9
 
 
 Compatibility
@@ -39,7 +39,7 @@ API
 A charseq instance.
 
 #### index
-The range of available string index.  
+The range of available string index.
 `(integer 0 #.array-total-size-limit)`
 
 
@@ -49,7 +49,7 @@ The range of available string index.
 Indicates the specified index is negative or exceeding target string size.
 
 #### bounding-indices-bad-error
-Indicates the specified indices (start and end position) are not within range of target string. 
+Indicates the specified indices (start and end position) are not within range of target string.
 
 
 ### [Functions]
@@ -119,7 +119,7 @@ Example:
 
 --------------------------------------------------------------------------------
 #### (sub charseq start &optional end) => sub-charseq
-Creates a charseq instance that is a subpart of _charseq_ bounded by _start_ and _end_.  
+Creates a charseq instance that is a subpart of _charseq_ bounded by _start_ and _end_.
 Internal string data is shared between _charseq_ and _sub-charseq_.
 
 | name        | type            | default value    | description                     |
@@ -155,7 +155,7 @@ Example:
 
 --------------------------------------------------------------------------------
 #### (to-string charseq &optional start end) => string
-Creates a string that is a copy of the subpart of _charseq_ bounded by _start_ and _end_. 
+Creates a string that is a copy of the subpart of _charseq_ bounded by _start_ and _end_.
 
 | name    | type                       | default value    | description                 |
 |:-------:|:--------------------------:|-----------------:|:----------------------------|
@@ -183,7 +183,7 @@ Example:
 #### (/= charseq1 charseq1) => boolean
 #### (<= charseq1 charseq1) => boolean
 #### (>= charseq1 charseq1) => boolean
-These functions perform lexicographical order comparison of _charseq1_ and _charseq2_. 
+These functions perform lexicographical order comparison of _charseq1_ and _charseq2_.
 
 
 ### [Macros]
@@ -205,10 +205,10 @@ Example:
 
 * (charseq:each (char *c* 'done)
     (print (list :char char)))
-(:CHAR #\m) 
-(:CHAR #\o) 
-(:CHAR #\n) 
-(:CHAR #\-) 
+(:CHAR #\m)
+(:CHAR #\o)
+(:CHAR #\n)
+(:CHAR #\-)
 (:CHAR #\l)
 DONE
 ```
@@ -223,7 +223,7 @@ This macro binds the internal state of _charseq_ to _string-var_, _start-var_, a
 | start-var  | symbol(variable) | The start position of _charseq_ is bound to this variable                |
 | end-var    | symbol(variable) | The end position of _charseq_ is bound to this variable                  |
 | charseq    | charseq:charseq  | Input charseq instance                                                   |
-| body       | T*               | Any expressions. the scope of bound variables is limited in this _body_. | 
+| body       | T*               | Any expressions. the scope of bound variables is limited in this _body_. |
 | result     | T                | Executed result of _body_                                                |
 
 Example:
@@ -234,7 +234,7 @@ Example:
 * (charseq:as-string (str start end) *c*
     (print (list str start end))
     'done)
-("common-lisp" 3 8) 
+("common-lisp" 3 8)
 DONE
 ```
 
@@ -247,5 +247,5 @@ The semantics of this macro is almost equivalent to the following expression:
   (declare (dynamic-extent charseq-var))
   ,@body)
 ```
-On SBCL, the value of _charseq-var_ will be allocated on the stack instead of the heap.   
+On SBCL, the value of _charseq-var_ will be allocated on the stack instead of the heap.
 In that case, the cost of creating charseq instance (from _(simple-array character *)_ string) will be almost negligible.
