@@ -4,7 +4,7 @@
   (:export invalid-index-error bounding-indices-bad-error
 	   charseq index
 	   make with-dynamic-extent
-	   ref length each sub 
+	   ref length each sub
 	   = < > <= >= /=
 	   to-string as-string))
 (in-package :charseq)
@@ -35,7 +35,7 @@
              (with-slots (length index) condition
                (format stream "Index ~A out of bounds of (~A ~A), should be nonnegative and ~:*<~A."
                        index 'charseq length)))))
-;;;;;;;;;; 
+;;;;;;;;;;
 ;;; struct
 (defstruct (charseq (:conc-name ""))
   (str "" :type (simple-array character) :read-only t)
@@ -67,7 +67,7 @@
 (defmacro def-charseq-cmp (name)
   `(defun ,name (#1=charseq1 #2=charseq2)
      (declare (charseq #1# #2#))
-     (,(mksym 'string name) (str #1#) (str #2#) 
+     (,(mksym 'string name) (str #1#) (str #2#)
                             :start1 (beg #1#) :end1 (end #1#)
 			    :start2 (beg #2#) :end2 (end #2#))))
 
