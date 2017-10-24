@@ -50,7 +50,7 @@
   #+CLOZURE ccl:declaration-information
 |#
   (defun safety-optimize-quantity (env)
-    #+SBCL (cdr (assoc 'common-lisp:safety (sb-c::lexenv-policy env)))
+    #+SBCL (sb-c::policy-quality (sb-c::lexenv-policy env) 'common-lisp:safety)
     #+CLOZURE (ccl::safety-optimize-quantity env)
     #-(or SBCL CLOZURE) 1)
 
